@@ -5,6 +5,7 @@ namespace Nicodinus\PhpSupportHelpers;
 
 
 use LogicException;
+use RuntimeException;
 
 trait ClassSingletonTrait
 {
@@ -43,5 +44,41 @@ trait ClassSingletonTrait
     public static function isInstanceCreated(): bool
     {
         return !empty(static::$_INSTANCE);
+    }
+
+    /**
+     * Singleton constructor.
+     */
+    protected function __construct()
+    {
+        // do nothing
+    }
+
+    /**
+     * Disable clone object.
+     */
+    protected function __clone()
+    {
+        // do nothing
+    }
+
+    /**
+     * Disable serialize object.
+     *
+     * @throws RuntimeException
+     */
+    public function __sleep()
+    {
+        throw new RuntimeException("Cannot serialize singleton");
+    }
+
+    /**
+     * Disable deserialize object.
+     *
+     * @throws RuntimeException
+     */
+    public function __wakeup()
+    {
+        throw new RuntimeException("Cannot deserialize singleton");
     }
 }
